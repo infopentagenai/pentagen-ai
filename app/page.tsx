@@ -6,6 +6,7 @@ import Footer from "../components/Footer";
 import AITools from "../components/AITools";
 import CTA from "../components/CTA";
 import WhyChoose from "../components/WhyChoose";
+import Pricing from "../components/Pricing";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <Features />
       <AITools />
       <WhyChoose />
+      <Pricing />
       <CTA />
       <Footer />
     </>
