@@ -1,4 +1,11 @@
+"use client";
+
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+
 export default function FAQ() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
   const faqs = [
     {
       question: "What is Pentagen AI?",
@@ -23,32 +30,84 @@ export default function FAQ() {
   ];
 
   return (
-    <section className="bg-slate-950 py-24">
+    <section className="bg-slate-950 py-28">
       <div className="mx-auto max-w-4xl px-6">
-        <h2 className="text-center text-5xl font-bold text-white">
-          Frequently Asked Questions
-        </h2>
 
-        <p className="mt-4 text-center text-gray-400">
-          Everything you need to know about Pentagen AI.
-        </p>
+        {/* Heading */}
 
-        <div className="mt-16 space-y-6">
-          {faqs.map((faq) => (
-            <div
-              key={faq.question}
-              className="rounded-2xl border border-slate-800 bg-slate-900 p-6"
-            >
-              <h3 className="text-xl font-semibold text-white">
-                {faq.question}
-              </h3>
+        <div className="text-center">
 
-              <p className="mt-3 text-gray-400">
-                {faq.answer}
-              </p>
-            </div>
-          ))}
+          <span className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-5 py-2 text-sm font-medium text-cyan-300">
+            FAQ
+          </span>
+
+          <h2 className="mt-6 text-5xl font-bold text-white md:text-6xl">
+            Frequently Asked
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              {" "}Questions
+            </span>
+          </h2>
+
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-400">
+            Everything you need to know before getting started with Pentagen AI.
+          </p>
+
         </div>
+
+        {/* Accordion */}
+
+        <div className="mt-16 space-y-5">
+
+          {faqs.map((faq, index) => {
+
+            const isOpen = openIndex === index;
+
+            return (
+
+              <div
+                key={faq.question}
+                className="rounded-2xl border border-slate-800 bg-slate-900/70 backdrop-blur transition-all duration-300 hover:border-cyan-400"
+              >
+
+                <button
+                  onClick={() =>
+                    setOpenIndex(isOpen ? null : index)
+                  }
+                  className="flex w-full items-center justify-between p-6 text-left"
+                >
+
+                  <h3 className="text-lg font-semibold text-white">
+                    {faq.question}
+                  </h3>
+
+                  {isOpen ? (
+                    <ChevronUp className="text-cyan-400" />
+                  ) : (
+                    <ChevronDown className="text-slate-400" />
+                  )}
+
+                </button>
+
+                {isOpen && (
+
+                  <div className="px-6 pb-6">
+
+                    <p className="leading-7 text-slate-400">
+                      {faq.answer}
+                    </p>
+
+                  </div>
+
+                )}
+
+              </div>
+
+            );
+
+          })}
+
+        </div>
+
       </div>
     </section>
   );
