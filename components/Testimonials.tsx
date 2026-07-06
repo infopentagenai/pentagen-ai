@@ -23,7 +23,10 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="bg-[#030617] py-28">
+  <section
+    id="testimonials"
+    className="bg-[#030617] py-28"
+  >
       <div className="mx-auto max-w-7xl px-6">
 
         {/* Heading */}

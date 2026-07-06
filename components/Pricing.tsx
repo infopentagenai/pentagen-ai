@@ -46,7 +46,10 @@ export default function Pricing() {
   ];
 
   return (
-    <section className="bg-[#020617] py-28">
+    <section
+  id="pricing"
+  className="bg-[#020617] py-28"
+>
       <div className="mx-auto max-w-7xl px-6">
 
         {/* Heading */}

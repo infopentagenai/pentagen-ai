@@ -30,7 +30,10 @@ export default function FAQ() {
   ];
 
   return (
-    <section className="bg-slate-950 py-28">
+    <section
+  id="faq"
+  className="scroll-mt-24 bg-slate-950 py-28"
+>
       <div className="mx-auto max-w-4xl px-6">
 
         {/* Heading */}

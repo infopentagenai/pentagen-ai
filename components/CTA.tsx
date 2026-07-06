@@ -2,7 +2,10 @@ import { ArrowRight } from "lucide-react";
 
 export default function CTA() {
   return (
-    <section className="relative overflow-hidden bg-slate-950 py-28">
+    <section
+  id="contact"
+  className="relative overflow-hidden bg-slate-950 py-28"
+>
 
       {/* Background Glow */}
       <div className="absolute left-1/2 top-1/2 h-[450px] w-[450px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-500/20 blur-[140px]" />
