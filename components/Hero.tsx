@@ -48,6 +48,17 @@ export default function Hero() {
   return (
     <section className="relative flex min-h-screen items-center overflow-hidden bg-slate-950">
       {/* Background Glow */}
+      {/* Background Grid */}
+      <div
+      className="absolute inset-0 opacity-10"
+      style={{
+      backgroundImage: `
+      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)
+      `,
+      backgroundSize: "50px 50px",
+      }}
+      />
       <div className="absolute left-20 top-32 h-72 w-72 rounded-full bg-cyan-500/20 blur-[120px]" />
       <div className="absolute bottom-20 right-10 h-96 w-96 rounded-full bg-blue-600/20 blur-[150px]" />
 
@@ -114,39 +125,116 @@ export default function Hero() {
         </motion.div>
 
         {/* Right Side */}
-        <div className="grid grid-cols-2 gap-5">
-          {tools.map((tool) => {
-            const Icon = tool.icon;
+        <div className="relative">
 
-            return (
-              <div
-                key={tool.title}
-                className="group rounded-2xl border border-slate-800 bg-slate-900/80 p-6 backdrop-blur transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:border-cyan-400 hover:shadow-[0_0_40px_rgba(34,211,238,0.18)]"
-              >
-                <div className="mb-4 flex items-center justify-between">
-              <div className="rounded-xl bg-cyan-500/10 p-3">
-              <Icon className="h-7 w-7 text-cyan-400" />
-              </div>
+  <div className="rounded-3xl border border-cyan-500/20 bg-slate-900/80 p-6 backdrop-blur-xl shadow-2xl">
 
-               <ArrowUpRight className="h-5 w-5 text-slate-500 transition group-hover:text-cyan-400" />
-               </div>
-                
+    <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+      <div>
+        <h3 className="text-xl font-bold text-white">
+          AI Assistant
+        </h3>
 
-                <h3 className="text-lg font-semibold text-white">
-                  {tool.title}
-                </h3>
+        <p className="text-sm text-slate-400">
+          Pentagen AI Workspace
+        </p>
+      </div>
 
-                <p className="mt-3 text-sm text-slate-400">
-                  {tool.description}
-                </p>
-                <p className="mt-5 inline-flex items-center text-sm font-medium text-cyan-400">
-                Learn More
-                <ArrowUpRight className="ml-1 h-4 w-4" />
-                </p>
-              </div>
-            );
-          })}
-        </div>
+      <div className="rounded-full bg-green-500/20 px-3 py-1 text-xs text-green-400">
+        ● Live
+      </div>
+    </div>
+
+    <div className="mt-6 space-y-4">
+
+      <div className="rounded-xl bg-slate-800/60 p-4">
+        <p className="text-sm text-slate-400">
+          User
+        </p>
+
+        <p className="mt-2 text-white">
+          Create a modern AI website hero section.
+        </p>
+      </div>
+
+      <div className="rounded-xl border border-cyan-500/20 bg-cyan-500/10 p-4">
+        <p className="text-sm text-cyan-300">
+          Pentagen AI
+        </p>
+
+        <p className="mt-2 text-white">
+          Hero generated successfully with premium UI.
+        </p>
+      </div>
+
+    </div>
+
+    <div className="mt-8 grid grid-cols-2 gap-4">
+
+      <div className="rounded-xl bg-slate-800 p-4">
+        <h4 className="text-2xl font-bold text-cyan-400">
+          100K+
+        </h4>
+
+        <p className="text-sm text-slate-400">
+          Active Users
+        </p>
+      </div>
+
+      <div className="rounded-xl bg-slate-800 p-4">
+        <h4 className="text-2xl font-bold text-cyan-400">
+          25+
+        </h4>
+
+        <p className="text-sm text-slate-400">
+          AI Tools
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div className="mt-8 rounded-2xl border border-slate-800 bg-slate-800/50 p-5">
+  <div className="mb-4 flex items-center justify-between">
+    <h4 className="text-sm font-semibold text-white">
+      AI Performance
+    </h4>
+
+    <span className="text-xs text-cyan-400">
+      Live Analytics
+    </span>
+  </div>
+
+  <div className="space-y-4">
+
+    <div>
+      <div className="mb-2 flex justify-between text-xs text-slate-400">
+        <span>Image Generation</span>
+        <span>92%</span>
+      </div>
+
+      <div className="h-2 rounded-full bg-slate-700">
+        <div className="h-2 w-[92%] rounded-full bg-cyan-400"></div>
+      </div>
+    </div>
+
+    <div>
+      <div className="mb-2 flex justify-between text-xs text-slate-400">
+        <span>AI Chat</span>
+        <span>98%</span>
+      </div>
+
+      <div className="h-2 rounded-full bg-slate-700">
+        <div className="h-2 w-[98%] rounded-full bg-green-400"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
       </div>
     </section>
   );
