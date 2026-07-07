@@ -10,11 +10,15 @@ import FAQ from "../components/FAQ";
 import CTA from "../components/CTA";
 import Footer from "../components/Footer";
 import BackToTop from "../components/BackToTop";
+import ScrollProgress from "../components/ScrollProgress";
+import MouseGlow from "../components/MouseGlow";
 
 export default function Home() {
   return (
     <>
+      <ScrollProgress />
       <Navbar />
+       <MouseGlow />
       <Hero />
       <Stats />
       <Features />
