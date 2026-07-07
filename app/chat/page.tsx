@@ -22,17 +22,49 @@ export default function ChatPage() {
     });
   }, [messages, loading]);
 
-  const handleSendMessage = async (text: string) => {
+  const handleSendMessage = async (
+    text: string,
+    image?: File | null
+  ) => {
     const userMessage: ChatMessage = {
       id: Date.now(),
       role: "user",
-      content: text,
+      content: text || "📷 Image",
     };
 
-    setMessages((prev) => [...prev, userMessage]);
+    const assistantId = Date.now() + 1;
+
+    const assistantMessage: ChatMessage = {
+      id: assistantId,
+      role: "assistant",
+      content: "",
+    };
+
+    setMessages((prev) => [
+      ...prev,
+      userMessage,
+      assistantMessage,
+    ]);
+
     setLoading(true);
 
     try {
+      let imageBase64 = "";
+
+      if (image) {
+        imageBase64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+
+          reader.onloadend = () => {
+            const result = reader.result as string;
+
+            resolve(result.split(",")[1]);
+          };
+
+          reader.readAsDataURL(image);
+        });
+      }
+
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: {
@@ -40,31 +72,56 @@ export default function ChatPage() {
         },
         body: JSON.stringify({
           message: text,
+          image: imageBase64,
+          mimeType: image?.type ?? "",
         }),
       });
 
-      const data = await response.json();
+      if (!response.ok) {
+        throw new Error("Request failed.");
+      }
 
-      const aiMessage: ChatMessage = {
-        id: Date.now() + 1,
-        role: "assistant",
-        content:
-          data.reply ||
-          "Sorry, I couldn't generate a response.",
-      };
+      if (!response.body) {
+        throw new Error("No response body.");
+      }
 
-      setMessages((prev) => [...prev, aiMessage]);
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      let fullResponse = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+
+        if (done) break;
+
+        fullResponse += decoder.decode(value);
+
+        setMessages((prev) =>
+          prev.map((msg) =>
+            msg.id === assistantId
+              ? {
+                  ...msg,
+                  content: fullResponse,
+                }
+              : msg
+          )
+        );
+      }
     } catch (error) {
       console.error(error);
 
-      const aiMessage: ChatMessage = {
-        id: Date.now() + 1,
-        role: "assistant",
-        content:
-          "❌ Unable to connect to the AI server.",
-      };
-
-      setMessages((prev) => [...prev, aiMessage]);
+      setMessages((prev) =>
+        prev.map((msg) =>
+          msg.id === assistantId
+            ? {
+                ...msg,
+                content:
+                  "❌ Unable to connect to the AI server.",
+              }
+            : msg
+        )
+      );
     } finally {
       setLoading(false);
     }
@@ -72,14 +129,11 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-screen bg-slate-950">
-      {/* Sidebar */}
       <ChatSidebar />
 
-      {/* Main */}
       <main className="flex flex-1 flex-col">
         <ChatHeader />
 
-        {/* Chat Area */}
         <div className="flex-1 overflow-y-auto p-8">
           {messages.length === 0 ? (
             <div className="flex h-full items-center justify-center">
@@ -97,7 +151,6 @@ export default function ChatPage() {
           )}
         </div>
 
-        {/* Input */}
         <div className="border-t border-slate-800 p-6">
           <ChatInput
             onSendMessage={handleSendMessage}
