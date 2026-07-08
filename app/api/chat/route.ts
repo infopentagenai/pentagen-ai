@@ -6,50 +6,49 @@ const ai = new GoogleGenAI({
 
 export async function POST(req: Request) {
   try {
-    const { message, image, mimeType } = await req.json();
+    const {
+      message,
+      image,
+      mimeType,
+    } = await req.json();
 
     if (!message && !image) {
-      return new Response("Message or image is required.", {
-        status: 400,
-      });
+      return new Response(
+        "Message or image is required",
+        {
+          status: 400,
+        }
+      );
     }
 
-    let stream;
+    let contents: any;
 
-    // ---------- IMAGE + TEXT ----------
+    // Image + Text
     if (image) {
-      stream = await ai.models.generateContentStream({
-        model: "gemini-2.5-flash",
-        contents: [
-          {
-            role: "user",
-            parts: [
-              ...(message
-                ? [
-                    {
-                      text: message,
-                    },
-                  ]
-                : []),
-              {
-                inlineData: {
-                  mimeType,
-                  data: image,
-                },
-              },
-            ],
+      contents = [
+        {
+          text:
+            message ||
+            "Describe this image in detail.",
+        },
+        {
+          inlineData: {
+            mimeType:
+              mimeType || "image/png",
+            data: image,
           },
-        ],
-      });
+        },
+      ];
+    } else {
+      // Only Text
+      contents = message;
     }
 
-    // ---------- TEXT ONLY ----------
-    else {
-      stream = await ai.models.generateContentStream({
+    const stream =
+      await ai.models.generateContentStream({
         model: "gemini-2.5-flash",
-        contents: message,
+        contents,
       });
-    }
 
     const encoder = new TextEncoder();
 
@@ -63,22 +62,26 @@ export async function POST(req: Request) {
           }
 
           controller.close();
-        } catch (err) {
-          controller.error(err);
+        } catch (error) {
+          controller.error(error);
         }
       },
     });
 
     return new Response(readableStream, {
       headers: {
-        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Type":
+          "text/plain; charset=utf-8",
       },
     });
   } catch (error) {
     console.error(error);
 
-    return new Response("Something went wrong.", {
-      status: 500,
-    });
+    return new Response(
+      "Something went wrong.",
+      {
+        status: 500,
+      }
+    );
   }
 }

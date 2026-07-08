@@ -56,9 +56,9 @@ export default function ChatPage() {
           const reader = new FileReader();
 
           reader.onloadend = () => {
-            const result = reader.result as string;
-
-            resolve(result.split(",")[1]);
+            resolve(
+              (reader.result as string).split(",")[1]
+            );
           };
 
           reader.readAsDataURL(image);
@@ -73,16 +73,12 @@ export default function ChatPage() {
         body: JSON.stringify({
           message: text,
           image: imageBase64,
-          mimeType: image?.type ?? "",
+          mimeType: image?.type,
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Request failed.");
-      }
-
       if (!response.body) {
-        throw new Error("No response body.");
+        throw new Error("No response body");
       }
 
       const reader = response.body.getReader();
